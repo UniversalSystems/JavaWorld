@@ -1,0 +1,13 @@
+// Spring Roo 1.2.5.RELEASE [rev 8341dc2] log opened at 2014-09-07 10:24:08
+// [failed] persistence setup --provider HIBERNATE --database MYSQL
+// [failed] persistence  setup --provider HIBERNATE --database MYSQL
+// [failed] persistence  setup --provider HIBERNATE --database MYSQL
+// [failed] jpa setup --database MYSQL --provider HIBERNATE
+persistence  setup --provider HIBERNATE --database MYSQL
+database properties set --key database.password --value full2work
+database properties set --key database.password --value password
+database properties set --key database.username --value root
+database properties set --key database.password --value full2work
+database properties set --key database.url --value jdbc:mysql://localhost:3333/spring
+database properties set --key database.url --value jdbc:mysql://localhost:3333/spring
+database properties set --key database.url --value jdbc:mysql://localhost:3333/spring

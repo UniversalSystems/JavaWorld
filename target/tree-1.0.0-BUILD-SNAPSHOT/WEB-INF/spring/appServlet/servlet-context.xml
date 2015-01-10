@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+		
+	xsi:schemaLocation="
+	    
+	    http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+		
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+		
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<context:component-scan base-package="com.mysystems.tree" />
+	
+	<mvc:annotation-driven />
+	
+<aop:config>
+<!--  
+   <aop:aspect id="postFilterAspect" ref="postFilterAdviceBean">
+   <aop:pointcut id="postFilterService"
+      expression="execution(* *service.impl.TreePlanterServiceImpl.plantATree(String))"/>
+       <aop:after-returning returning="name" method="postFilter" pointcut-ref="postFilterService" />
+   </aop:aspect>
+-->
+<aop:aspect id="preFilterAspect" ref="preFilterAdviceBean">
+   <aop:pointcut  id="preFilterService"
+      expression="execution(* *service.impl.TreePlanterServiceImpl.plantATree(..)) and args(name)" />
+    <aop:before  method="preFilter" pointcut-ref="preFilterService" />
+   </aop:aspect>
+</aop:config>
+
+
+<beans:bean id="postFilterAdviceBean" class="com.mysystems.tree.service.impl.ServiceAuthorizationAspect">
+</beans:bean>
+
+<beans:bean id="preFilterAdviceBean" class="com.mysystems.tree.service.impl.ServiceAuthorizationAspect">
+</beans:bean>
+
+</beans:beans>

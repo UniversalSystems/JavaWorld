@@ -1,0 +1,40 @@
+
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                    http://www.springframework.org/schema/security 
+                    http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+    	    
+    <http pattern="/static/**" security="none" /> <!-- provide patterns for security for static resources like css and images -->
+    <http use-expressions="true" 
+     access-denied-page="/accessDenied" >
+         <intercept-url pattern="/app/login" access= "isAnonymous()"  requires-channel="https"/>
+         <intercept-url pattern="/**"  access= "isAuthenticated()" />
+        
+        <form-login 
+        login-page = "/app/login"
+         />
+         <logout logout-success-url="/logout"/>
+         <session-management  session-authentication-strategy-ref="sas" invalid-session-url="/sessionTimeout">
+          </session-management>
+         
+    </http>
+
+    <authentication-manager>
+        <authentication-provider user-service-ref="userService">
+        <password-encoder hash="md5"/>
+        </authentication-provider>
+    </authentication-manager>
+     
+    <global-method-security pre-post-annotations="enabled">
+        <protect-pointcut
+         expression="execution(* *ServiceImpl.getUsers(..))" access="ROLE_ADMIN" />
+        <protect-pointcut  expression="execution(* *serviceImpl.preview(…)" access="ROLE_EDITOR,ROLE_PUBLISHER"/>
+   </global-method-security> 
+  
+  
+</beans:beans>   
